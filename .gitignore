@@ -20,3 +20,6 @@ android/build/build/
 android/build/.gradle/
 android/build/libs/
 android/build/local.properties
+
+# Never commit signing material
+*.keystore
