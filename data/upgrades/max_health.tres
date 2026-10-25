@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="UpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://scripts/stat_effect.gd" id="1_x0tse"]
+[ext_resource type="Script" path="res://scripts/upgrade_definition.gd" id="2_trm45"]
+
+[sub_resource type="Resource" id="Resource_o1evs"]
+script = ExtResource("1_x0tse")
+stat = &"max_health"
+value = 25.0
+
+[resource]
+script = ExtResource("2_trm45")
+id = &"max_health"
+display_name = "Vitality"
+description = "+25 max health (and heal for it)."
+max_applications = 8
+effects = Array[ExtResource("1_x0tse")]([SubResource("Resource_o1evs")])

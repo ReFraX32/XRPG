@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" format=3]
+
+[ext_resource type="Script" path="res://scripts/enemy_definition.gd" id="1_a7nvo"]
+
+[resource]
+script = ExtResource("1_a7nvo")
+id = &"slime_red"
+display_name = "Brute Slime"
+max_health = 45.0
+move_speed = 35.0
+contact_damage = 14.0
+exp_value = 3
+scale = 1.25
+tint = Color(1, 0.45, 0.4, 1)
+unlock_time = 120.0
+weight = 5.0

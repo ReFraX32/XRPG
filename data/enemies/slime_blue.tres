@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" format=3]
+
+[ext_resource type="Script" path="res://scripts/enemy_definition.gd" id="1_8ys0n"]
+
+[resource]
+script = ExtResource("1_8ys0n")
+id = &"slime_blue"
+display_name = "Slime"
+weight = 10.0

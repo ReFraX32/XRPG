@@ -1,0 +1,74 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/level_up_ui.gd" id="1_levelup"]
+
+[node name="LevelUpUI" type="CanvasLayer"]
+process_mode = 2
+layer = 10
+script = ExtResource("1_levelup")
+
+[node name="Dim" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="Center" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="Center"]
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="Center/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="Center/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="Center/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "LEVEL UP!"
+horizontal_alignment = 1
+
+[node name="Options" type="HBoxContainer" parent="Center/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Option1" type="Button" parent="Center/Panel/Margin/VBox/Options"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(230, 140)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Upgrade"
+
+[node name="Option2" type="Button" parent="Center/Panel/Margin/VBox/Options"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(230, 140)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Upgrade"
+
+[node name="Option3" type="Button" parent="Center/Panel/Margin/VBox/Options"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(230, 140)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Upgrade"
+
+[node name="Hint" type="Label" parent="Center/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Click, press 1/2/3, or use the gamepad"
+horizontal_alignment = 1

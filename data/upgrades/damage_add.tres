@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="UpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://scripts/stat_effect.gd" id="1_3bsfi"]
+[ext_resource type="Script" path="res://scripts/upgrade_definition.gd" id="2_plk6y"]
+
+[sub_resource type="Resource" id="Resource_05e21"]
+script = ExtResource("1_3bsfi")
+stat = &"damage"
+value = 8.0
+
+[resource]
+script = ExtResource("2_plk6y")
+id = &"damage_add"
+display_name = "Brutality"
+description = "+8 flat damage per swing."
+effects = Array[ExtResource("1_3bsfi")]([SubResource("Resource_05e21")])

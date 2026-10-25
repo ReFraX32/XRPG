@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" format=3]
+
+[ext_resource type="Script" path="res://scripts/enemy_definition.gd" id="1_6yt36"]
+
+[resource]
+script = ExtResource("1_6yt36")
+id = &"slime_green"
+display_name = "Swift Slime"
+max_health = 12.0
+move_speed = 65.0
+contact_damage = 8.0
+exp_value = 2
+scale = 0.85
+tint = Color(0.55, 1, 0.5, 1)
+unlock_time = 60.0
+weight = 6.0

@@ -1,0 +1,44 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/loading_screen.gd" id="1_loading"]
+
+[node name="LoadingScreen" type="CanvasLayer"]
+layer = 20
+script = ExtResource("1_loading")
+map_generator_path = NodePath("../MapGenerator")
+
+[node name="Root" type="ColorRect" parent="."]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.043, 0.066, 0.05, 1)
+
+[node name="Center" type="CenterContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Root/Center"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="LoadLabel" type="Label" parent="Root/Center/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "LOADING"
+horizontal_alignment = 1
+
+[node name="LoadBar" type="ProgressBar" parent="Root/Center/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 14)
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+show_percentage = false

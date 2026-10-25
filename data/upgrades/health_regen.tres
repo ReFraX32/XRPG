@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="UpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://scripts/stat_effect.gd" id="1_ekt35"]
+[ext_resource type="Script" path="res://scripts/upgrade_definition.gd" id="2_k2awg"]
+
+[sub_resource type="Resource" id="Resource_p4u14"]
+script = ExtResource("1_ekt35")
+stat = &"health_regen"
+value = 2.0
+
+[resource]
+script = ExtResource("2_k2awg")
+id = &"health_regen"
+display_name = "Regeneration"
+description = "Recover 2 extra health per second."
+effects = Array[ExtResource("1_ekt35")]([SubResource("Resource_p4u14")])

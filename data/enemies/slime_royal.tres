@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" format=3]
+
+[ext_resource type="Script" path="res://scripts/enemy_definition.gd" id="1_5jtd6"]
+
+[resource]
+script = ExtResource("1_5jtd6")
+id = &"slime_royal"
+display_name = "Royal Slime"
+max_health = 140.0
+move_speed = 30.0
+contact_damage = 20.0
+exp_value = 10
+scale = 1.7
+tint = Color(0.75, 0.4, 1, 1)
+unlock_time = 240.0
+weight = 2.0

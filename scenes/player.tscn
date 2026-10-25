@@ -1,9 +1,10 @@
-[gd_scene load_steps=59 format=3 uid="uid://bcajrvn5c5fcv"]
+[gd_scene load_steps=62 format=3 uid="uid://bcajrvn5c5fcv"]
 
 [ext_resource type="Script" uid="uid://cusumss6ccdhq" path="res://scripts/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://6w4lru8focd2" path="res://art/characters/player.png" id="2_qhqgy"]
 [ext_resource type="PackedScene" uid="uid://boga8f5ou7hvi" path="res://scenes/touch_controls.tscn" id="3_qhqgy"]
 [ext_resource type="Texture2D" uid="uid://ccdcjsuj330uy" path="res://art/attack_button.png" id="4_dqkch"]
+[ext_resource type="Script" path="res://scripts/player_stats.gd" id="5_stats"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_g2els"]
 radius = 5.0
@@ -419,7 +420,14 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_qhqgy"]
-radius = 15.0333
+radius = 24.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pickup"]
+resource_local_to_scene = true
+radius = 60.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_danger"]
+radius = 11.0
 
 [node name="player" type="CharacterBody2D"]
 collision_layer = 3
@@ -427,6 +435,9 @@ script = ExtResource("1_g2els")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_g2els")
+
+[node name="PlayerStats" type="Node" parent="."]
+script = ExtResource("5_stats")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 y_sort_enabled = true
@@ -439,6 +450,13 @@ animation = &"side_walk"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="player_hitbox"]
 position = Vector2(0, -3)
 shape = SubResource("CircleShape2D_qhqgy")
+
+[node name="danger_area" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="danger_area"]
+shape = SubResource("CircleShape2D_danger")
 
 [node name="attack_cooldown" type="Timer" parent="."]
 wait_time = 0.5
@@ -463,27 +481,45 @@ scale = Vector2(0.1, 0.1)
 show_percentage = false
 
 [node name="regin_time" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 1.0
 autostart = true
 
-[node name="Control" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_left = -141.0
-offset_top = 38.0
-offset_right = -101.0
-offset_bottom = 78.0
+[node name="collect_area" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
 
-[node name="touch_controls" parent="Control" instance=ExtResource("3_qhqgy")]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="collect_area"]
+shape = SubResource("CircleShape2D_pickup")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = 2
 
-[node name="attack_button" type="TouchScreenButton" parent="CanvasLayer"]
-position = Vector2(904, 409)
-scale = Vector2(0.21582, 0.19043)
+[node name="touch_controls" parent="CanvasLayer" instance=ExtResource("3_qhqgy")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="attack_button" type="TextureButton" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -160.0
+offset_right = -30.0
+offset_bottom = -40.0
+grow_horizontal = 0
+grow_vertical = 0
 texture_normal = ExtResource("4_dqkch")
-texture_pressed = ExtResource("4_dqkch")
+ignore_texture_size = true
+stretch_mode = 5
 
 [connection signal="body_entered" from="player_hitbox" to="." method="_on_player_hitbox_body_entered"]
 [connection signal="body_exited" from="player_hitbox" to="." method="_on_player_hitbox_body_exited"]

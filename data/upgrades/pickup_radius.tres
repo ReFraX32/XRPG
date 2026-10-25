@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="UpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://scripts/stat_effect.gd" id="1_vhsh8"]
+[ext_resource type="Script" path="res://scripts/upgrade_definition.gd" id="2_jvoag"]
+
+[sub_resource type="Resource" id="Resource_7vh7c"]
+script = ExtResource("1_vhsh8")
+stat = &"pickup_radius"
+op = 1
+value = 1.3
+
+[resource]
+script = ExtResource("2_jvoag")
+id = &"pickup_radius"
+display_name = "Magnetism"
+description = "EXP gems fly to you from 30% farther."
+max_applications = 6
+effects = Array[ExtResource("1_vhsh8")]([SubResource("Resource_7vh7c")])

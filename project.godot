@@ -8,16 +8,21 @@
 
 config_version=5
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="XRPG"
-run/main_scene="uid://dk38luftgff8h"
-config/features=PackedStringArray("4.5", "GL Compatibility")
+run/main_scene="res://scenes/survival.tscn"
+config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://art/icon.svg"
 
 [autoload]
 
 global="*res://scripts/global.gd"
+GameEvents="*res://scripts/game_events.gd"
 
 [input]
 

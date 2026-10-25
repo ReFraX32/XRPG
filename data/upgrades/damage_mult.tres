@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="UpgradeDefinition" format=3]
+
+[ext_resource type="Script" path="res://scripts/stat_effect.gd" id="1_52bik"]
+[ext_resource type="Script" path="res://scripts/upgrade_definition.gd" id="2_d830v"]
+
+[sub_resource type="Resource" id="Resource_4wbuc"]
+script = ExtResource("1_52bik")
+stat = &"damage"
+op = 1
+value = 1.25
+
+[resource]
+script = ExtResource("2_d830v")
+id = &"damage_mult"
+display_name = "Sharp Edge"
+description = "Your strikes hit 25% harder."
+max_applications = 8
+effects = Array[ExtResource("1_52bik")]([SubResource("Resource_4wbuc")])

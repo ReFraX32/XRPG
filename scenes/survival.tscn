@@ -1,0 +1,80 @@
+[gd_scene load_steps=20 format=3]
+
+[ext_resource type="Script" path="res://scripts/run_director.gd" id="1_director"]
+[ext_resource type="Script" path="res://scripts/map_generator.gd" id="2_mapgen"]
+[ext_resource type="Script" path="res://scripts/enemy_spawner.gd" id="3_spawner"]
+[ext_resource type="Script" path="res://scripts/exp_gem_system.gd" id="4_gems"]
+[ext_resource type="PackedScene" uid="uid://bcajrvn5c5fcv" path="res://scenes/player.tscn" id="5_player"]
+[ext_resource type="TileSet" path="res://data/tileset/survival_tileset.tres" id="6_tileset"]
+[ext_resource type="PackedScene" uid="uid://dav44hy6qph2" path="res://scenes/enemy.tscn" id="7_enemy"]
+[ext_resource type="PackedScene" path="res://scenes/exp_gem.tscn" id="8_gem"]
+[ext_resource type="PackedScene" path="res://scenes/hud.tscn" id="9_hud"]
+[ext_resource type="PackedScene" path="res://scenes/level_up_ui.tscn" id="10_levelup"]
+[ext_resource type="PackedScene" path="res://scenes/game_over_ui.tscn" id="11_gameover"]
+[ext_resource type="PackedScene" path="res://scenes/loading_screen.tscn" id="19_loading"]
+[ext_resource type="Resource" path="res://data/difficulty/standard.tres" id="12_difficulty"]
+[ext_resource type="Resource" path="res://data/map/fields.tres" id="13_map"]
+[ext_resource type="Script" path="res://scripts/enemy_definition.gd" id="18_defscript"]
+[ext_resource type="Resource" path="res://data/enemies/slime_blue.tres" id="14_blue"]
+[ext_resource type="Resource" path="res://data/enemies/slime_green.tres" id="15_green"]
+[ext_resource type="Resource" path="res://data/enemies/slime_red.tres" id="16_red"]
+[ext_resource type="Resource" path="res://data/enemies/slime_royal.tres" id="17_royal"]
+
+[node name="survival" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_director")
+difficulty = ExtResource("12_difficulty")
+
+[node name="MapGenerator" type="Node2D" parent="."]
+y_sort_enabled = true
+unique_name_in_owner = true
+script = ExtResource("2_mapgen")
+config = ExtResource("13_map")
+
+[node name="ground" type="TileMapLayer" parent="MapGenerator"]
+z_index = -2
+tile_set = ExtResource("6_tileset")
+
+[node name="detail" type="TileMapLayer" parent="MapGenerator"]
+z_index = -1
+tile_set = ExtResource("6_tileset")
+
+[node name="props" type="TileMapLayer" parent="MapGenerator"]
+y_sort_enabled = true
+tile_set = ExtResource("6_tileset")
+
+[node name="EnemyContainer" type="Node2D" parent="."]
+y_sort_enabled = true
+unique_name_in_owner = true
+
+[node name="GemContainer" type="Node2D" parent="."]
+y_sort_enabled = true
+unique_name_in_owner = true
+
+[node name="player" parent="." instance=ExtResource("5_player")]
+unique_name_in_owner = true
+
+[node name="EnemySpawner" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_spawner")
+difficulty = ExtResource("12_difficulty")
+enemy_scene = ExtResource("7_enemy")
+definitions = Array[ExtResource("18_defscript")]([ExtResource("14_blue"), ExtResource("15_green"), ExtResource("16_red"), ExtResource("17_royal")])
+
+[node name="ExpGemSystem" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_gems")
+gem_scene = ExtResource("8_gem")
+
+[node name="HUD" parent="." instance=ExtResource("9_hud")]
+unique_name_in_owner = true
+
+[node name="LevelUpUI" parent="." instance=ExtResource("10_levelup")]
+process_mode = 2
+unique_name_in_owner = true
+
+[node name="GameOverUI" parent="." instance=ExtResource("11_gameover")]
+process_mode = 2
+unique_name_in_owner = true
+
+[node name="LoadingScreen" parent="." instance=ExtResource("19_loading")]

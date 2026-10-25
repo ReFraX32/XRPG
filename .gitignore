@@ -14,3 +14,9 @@ export_credentials.cfg
 .mono/
 data_*/
 mono_crash.*.json
+
+# Android build artifacts and reinstallable template components
+android/build/build/
+android/build/.gradle/
+android/build/libs/
+android/build/local.properties
