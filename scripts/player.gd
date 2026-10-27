@@ -35,7 +35,13 @@ var _enemies_in_danger := 0
 var _base_attack_wait := 0.5
 var _base_deal_attack_wait := 0.5
 
+var is_invulnerable := false
+var invulnerability_timer := 0.0
+var temp_speed_multiplier := 1.0
+var speed_boost_timer := 0.0
+
 @onready var stats: PlayerStats = $PlayerStats
+var weapon_manager: WeaponManager = null
 
 
 func _ready():
@@ -66,6 +72,12 @@ func _ready():
 	$danger_area.body_entered.connect(_on_danger_area_body_entered)
 	$danger_area.body_exited.connect(_on_danger_area_body_exited)
 
+	weapon_manager = get_node_or_null("WeaponManager")
+	if weapon_manager == null:
+		weapon_manager = WeaponManager.new()
+		weapon_manager.name = "WeaponManager"
+		add_child(weapon_manager)
+
 
 func init_camera():
 	# The survival map is infinite and has no "ground" sibling; only clamp
@@ -83,6 +95,18 @@ func init_camera():
 func _physics_process(delta):
 	if not player_alive:
 		return
+
+	if invulnerability_timer > 0.0:
+		invulnerability_timer -= delta
+		if invulnerability_timer <= 0.0:
+			is_invulnerable = false
+			modulate = Color.WHITE
+
+	if speed_boost_timer > 0.0:
+		speed_boost_timer -= delta
+		if speed_boost_timer <= 0.0:
+			temp_speed_multiplier = 1.0
+
 	player_movement(delta)
 	enemy_attack()
 	_update_attacks()
@@ -93,7 +117,7 @@ func _physics_process(delta):
 
 func player_movement(_delta):
 	var input_vector = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	velocity = input_vector * stats.get_stat(&"move_speed")
+	velocity = input_vector * (stats.get_stat(&"move_speed") * temp_speed_multiplier)
 
 	# Direction for animations
 	if input_vector.length() > 0:
@@ -231,9 +255,34 @@ func enemy_attack():
 	# Contact damage only inside the small danger zone, NOT the full swing
 	# reach: kiting keeps you safe while your swings still connect.
 	if enemy_in_danger_range and enemy_attack_cooldown:
-		health -= _contact_damage()
+		if is_invulnerable:
+			return
+		var dmg := _contact_damage()
+		# Aegis / Defensive weapon interception
+		if weapon_manager != null and weapon_manager.try_intercept_damage(dmg, _touching_enemy):
+			enemy_attack_cooldown = false
+			$attack_cooldown.start()
+			return
+		health -= dmg
 		enemy_attack_cooldown = false
 		$attack_cooldown.start()
+
+
+func grant_invulnerability(duration: float) -> void:
+	is_invulnerable = true
+	invulnerability_timer = maxf(invulnerability_timer, duration)
+	modulate = Color(1.8, 1.8, 0.4, 1.0)
+
+
+func grant_speed_boost(multiplier: float, duration: float) -> void:
+	temp_speed_multiplier = maxf(temp_speed_multiplier, multiplier)
+	speed_boost_timer = maxf(speed_boost_timer, duration)
+
+
+func heal(amount: float) -> void:
+	var max_hp = stats.get_stat(&"max_health")
+	health = minf(health + amount, max_hp)
+	update_health()
 
 
 ## Whether a world position is inside the melee swing reach. Enemies call

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="WeaponDefinition" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapon_definition.gd" id="1_def"]
+[ext_resource type="Texture2D" path="res://art/weapons/aura_icon.png" id="2_icon"]
+
+[resource]
+script = ExtResource("1_def")
+id = &"aura"
+display_name = "Aura Sagrada"
+category = "Daño Continuo"
+icon = ExtResource("2_icon")
+base_description = "Campo eléctrico que daña en área."
+base_damage = 8.0
+base_range = 65.0
+base_cooldown = 0.25
+common_perk = "Daño continuo alrededor tuyo."
+epic_perk = "Ralentiza enemigos un 20%."
+legendary_perk = "Onda expansiva cada 5s."
+mythic_perk = "Enemigos muertos explotan."

@@ -18,11 +18,13 @@ const BASE_STATS := {
 	&"pickup_radius": 60.0,
 	&"health_regen": 4.0,   # hp per second
 	&"exp_gain": 1.0,       # multiplier applied to collected gems
+	&"crit_chance": 0.05,   # base 5% critical strike chance
 }
 
 ## UpgradeDefinition -> times picked, used to honor max_applications and to
 ## show current stacks in the level-up UI.
 var upgrade_counts := {}
+var bonus_stats := {}
 
 var _applied: Array[UpgradeDefinition] = []
 var _values := {}
@@ -52,9 +54,17 @@ func apply_upgrade(upgrade: UpgradeDefinition) -> bool:
 	return true
 
 
+func add_permanent_stat(stat: StringName, amount: float) -> void:
+	bonus_stats[stat] = bonus_stats.get(stat, 0.0) + amount
+	recalculate()
+
+
 func recalculate() -> void:
 	_values = BASE_STATS.duplicate()
 	for upgrade in _applied:
 		for effect in upgrade.effects:
 			effect.apply_to(_values)
+	for stat in bonus_stats:
+		if _values.has(stat):
+			_values[stat] += bonus_stats[stat]
 	stats_recalculated.emit()

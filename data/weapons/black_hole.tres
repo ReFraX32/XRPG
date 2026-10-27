@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="WeaponDefinition" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapon_definition.gd" id="1_def"]
+[ext_resource type="Texture2D" path="res://art/weapons/black_hole_icon.png" id="2_icon"]
+
+[resource]
+script = ExtResource("1_def")
+id = &"black_hole"
+display_name = "Agujero Negro"
+category = "Control / Explosión"
+icon = ExtResource("2_icon")
+base_description = "Vórtice que succiona y explota."
+base_damage = 35.0
+base_range = 90.0
+base_cooldown = 4.2
+common_perk = "Atrae enemigos y detona."
+epic_perk = "+40% radio y detona más rápido."
+legendary_perk = "Genera 3 mini-vórtices al explotar."
+mythic_perk = "Absorbe todo para daño masivo."

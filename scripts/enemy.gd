@@ -29,12 +29,100 @@ var _player_in_attack_zone := false
 # Legacy-only: chase flag driven by the detection area.
 var _chasing := false
 
+var _knockback_velocity: Vector2 = Vector2.ZERO
+var _slow_factor: float = 0.0
+var _slow_timer: float = 0.0
+
+static var _ghost_frames: SpriteFrames = null
+static var _bat_frames: SpriteFrames = null
+var _slime_frames: SpriteFrames = null
+
+# Monster abilities & animations state
+var _float_time: float = 0.0
+var _ethereal_timer: float = 0.0
+var _is_ethereal: bool = false
+var _ethereal_duration: float = 0.0
+
+var _wave_time: float = 0.0
+var _is_telegraphing: bool = false
+var _is_diving: bool = false
+var _dive_duration: float = 0.0
+var _dive_direction: Vector2 = Vector2.ZERO
+var _dive_cooldown: float = 0.0
+
+
+static func _get_ghost_frames() -> SpriteFrames:
+	if _ghost_frames != null:
+		return _ghost_frames
+	var tex: Texture2D = load("res://art/characters/ghost.png")
+	var frames := SpriteFrames.new()
+	var f0 := AtlasTexture.new()
+	f0.atlas = tex
+	f0.region = Rect2(0, 0, 36, 36)
+	var f1 := AtlasTexture.new()
+	f1.atlas = tex
+	f1.region = Rect2(36, 0, 36, 36)
+	
+	frames.add_animation(&"idle")
+	frames.set_animation_loop(&"idle", true)
+	frames.set_animation_speed(&"idle", 3.0)
+	frames.add_frame(&"idle", f0)
+	frames.add_frame(&"idle", f1)
+	
+	frames.add_animation(&"walk")
+	frames.set_animation_loop(&"walk", true)
+	frames.set_animation_speed(&"walk", 5.0)
+	frames.add_frame(&"walk", f0)
+	frames.add_frame(&"walk", f1)
+	
+	frames.add_animation(&"death")
+	frames.set_animation_loop(&"death", false)
+	frames.set_animation_speed(&"death", 6.0)
+	frames.add_frame(&"death", f0)
+	frames.add_frame(&"death", f1)
+	
+	_ghost_frames = frames
+	return _ghost_frames
+
+
+static func _get_bat_frames() -> SpriteFrames:
+	if _bat_frames != null:
+		return _bat_frames
+	var tex: Texture2D = load("res://art/characters/bat.png")
+	var frames := SpriteFrames.new()
+	var f0 := AtlasTexture.new()
+	f0.atlas = tex
+	f0.region = Rect2(0, 0, 40, 26)
+	var f1 := AtlasTexture.new()
+	f1.atlas = tex
+	f1.region = Rect2(40, 0, 40, 26)
+	
+	frames.add_animation(&"idle")
+	frames.set_animation_loop(&"idle", true)
+	frames.set_animation_speed(&"idle", 4.0)
+	frames.add_frame(&"idle", f0)
+	frames.add_frame(&"idle", f1)
+	
+	frames.add_animation(&"walk")
+	frames.set_animation_loop(&"walk", true)
+	frames.set_animation_speed(&"walk", 7.0)
+	frames.add_frame(&"walk", f0)
+	frames.add_frame(&"walk", f1)
+	
+	frames.add_animation(&"death")
+	frames.set_animation_loop(&"death", false)
+	frames.set_animation_speed(&"death", 8.0)
+	frames.add_frame(&"death", f0)
+	frames.add_frame(&"death", f1)
+	
+	_bat_frames = frames
+	return _bat_frames
+
 
 func _ready() -> void:
 	if not is_in_group("enemy"):
 		add_to_group("enemy")
-	# The death animation is authored as looping; make it one-shot so the
-	# recycle callback can wait for it.
+	_slime_frames = $AnimatedSprite2D.sprite_frames
 	$AnimatedSprite2D.sprite_frames.set_animation_loop(&"death", false)
 
 
@@ -50,6 +138,9 @@ func setup(p_definition: EnemyDefinition, p_player: Node2D, p_pool: ObjectPool,
 	_can_take_damage = true
 	_player_in_attack_zone = false
 	_chasing = true
+	_knockback_velocity = Vector2.ZERO
+	_slow_factor = 0.0
+	_slow_timer = 0.0
 
 	max_health = maxf(1.0, p_definition.max_health * health_scale)
 	health = max_health
@@ -59,33 +150,156 @@ func setup(p_definition: EnemyDefinition, p_player: Node2D, p_pool: ObjectPool,
 
 	scale = Vector2.ONE * p_definition.scale
 	$AnimatedSprite2D.modulate = p_definition.tint
+	$AnimatedSprite2D.position = Vector2.ZERO
+	$AnimatedSprite2D.rotation = 0.0
 	$healthbar.max_value = max_health
 	# Horde enemies always know where the player is; detection stays unused.
 	$detection_area.monitoring = false
+
+	_float_time = randf() * TAU
+	_ethereal_timer = randf_range(1.0, 3.0)
+	_is_ethereal = false
+	_ethereal_duration = 0.0
+
+	_wave_time = randf() * TAU
+	_is_telegraphing = false
+	_is_diving = false
+	_dive_duration = 0.0
+	_dive_direction = Vector2.ZERO
+	_dive_cooldown = randf_range(2.0, 4.0)
+
+	if p_definition.id == &"ghost":
+		$AnimatedSprite2D.sprite_frames = _get_ghost_frames()
+	elif p_definition.id == &"bat":
+		$AnimatedSprite2D.sprite_frames = _get_bat_frames()
+	else:
+		$AnimatedSprite2D.sprite_frames = _slime_frames
+
 	$AnimatedSprite2D.play(&"walk")
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if _dying:
 		return
 	deal_with_damage()
 	update_health()
+	
+	if _slow_timer > 0.0:
+		_slow_timer -= delta
+		if _slow_timer <= 0.0:
+			_slow_factor = 0.0
+	
+	var is_ghost: bool = definition != null and definition.id == &"ghost"
+	var is_bat: bool = definition != null and definition.id == &"bat"
+	
+	# Ghost ability: levitation float & ethereal phasing
+	if is_ghost:
+		_float_time += delta
+		$AnimatedSprite2D.position.y = sin(_float_time * 4.5) * 4.0
+		_ethereal_timer += delta
+		if not _is_ethereal and _ethereal_timer >= 4.5:
+			_is_ethereal = true
+			_ethereal_duration = 1.8
+			_ethereal_timer = 0.0
+		if _is_ethereal:
+			_ethereal_duration -= delta
+			$AnimatedSprite2D.modulate = Color(0.7, 0.9, 1.0, 0.4)
+			_slow_factor = 0.0
+			if _ethereal_duration <= 0.0:
+				_is_ethereal = false
+				$AnimatedSprite2D.modulate = definition.tint
+	
+	# Bat ability: wave-flight, dive-bomb telegraph & swoop
+	if is_bat:
+		_wave_time += delta
+		_dive_cooldown -= delta
+		if not _is_telegraphing and not _is_diving and _dive_cooldown <= 0.0:
+			if _player != null and is_instance_valid(_player):
+				var d: float = global_position.distance_to(_player.global_position)
+				if d < 220.0 and d > 35.0:
+					_is_telegraphing = true
+					_dive_duration = 0.35
+					$AnimatedSprite2D.modulate = Color(1.8, 0.3, 0.3, 1.0)
+		elif _is_telegraphing:
+			_dive_duration -= delta
+			velocity = _knockback_velocity
+			move_and_slide()
+			_knockback_velocity = _knockback_velocity.move_toward(Vector2.ZERO, 600.0 * delta)
+			if _dive_duration <= 0.0:
+				_is_telegraphing = false
+				_is_diving = true
+				_dive_duration = 0.5
+				$AnimatedSprite2D.modulate = definition.tint
+				if _player != null and is_instance_valid(_player):
+					_dive_direction = (_player.global_position - global_position).normalized()
+				else:
+					_dive_direction = Vector2.DOWN
+			return
+		elif _is_diving:
+			_dive_duration -= delta
+			var dive_speed: float = move_speed * 2.6
+			velocity = _dive_direction * dive_speed + _knockback_velocity
+			move_and_slide()
+			$AnimatedSprite2D.flip_h = _dive_direction.x < 0.0
+			$AnimatedSprite2D.play(&"walk")
+			_knockback_velocity = _knockback_velocity.move_toward(Vector2.ZERO, 600.0 * delta)
+			if _dive_duration <= 0.0:
+				_is_diving = false
+				_dive_cooldown = 3.5
+			return
+	
+	var effective_speed: float = move_speed * (1.0 - clampf(_slow_factor, 0.0, 0.9))
+	if is_ghost and _is_ethereal:
+		effective_speed *= 1.45
+	
 	if _chasing and _player != null and is_instance_valid(_player):
 		var to_player := _player.global_position - global_position
-		velocity = to_player.normalized() * move_speed
+		var dir := to_player.normalized()
+		var move_vel := dir * effective_speed
+		if is_bat:
+			var perp := Vector2(-dir.y, dir.x)
+			move_vel += perp * (sin(_wave_time * 8.0) * 32.0)
+		
+		velocity = move_vel + _knockback_velocity
 		move_and_slide()
 		$AnimatedSprite2D.flip_h = to_player.x < 0.0
 		$AnimatedSprite2D.play(&"walk")
 	else:
-		velocity = Vector2.ZERO
+		velocity = _knockback_velocity
+		move_and_slide()
 		$AnimatedSprite2D.play(&"idle")
+	
+	_knockback_velocity = _knockback_velocity.move_toward(Vector2.ZERO, 600.0 * delta)
 
 
-func take_damage(amount: float) -> void:
-	if _dying or not _can_take_damage:
+func apply_knockback(force: Vector2) -> void:
+	if _dying:
 		return
-	_can_take_damage = false
-	$take_damage_cooldown.start()
+	_knockback_velocity += force
+
+
+func apply_slow(factor: float, duration: float) -> void:
+	if _dying:
+		return
+	_slow_factor = maxf(_slow_factor, factor)
+	_slow_timer = maxf(_slow_timer, duration)
+
+
+func apply_pull(target_pos: Vector2, pull_force: float, delta: float) -> void:
+	if _dying:
+		return
+	var dir := (target_pos - global_position).normalized()
+	_knockback_velocity += dir * (pull_force * delta * 60.0)
+
+
+func take_damage(amount: float, ignore_cooldown: bool = false) -> void:
+	if _dying:
+		return
+	if not ignore_cooldown and not _can_take_damage:
+		return
+	if not ignore_cooldown:
+		_can_take_damage = false
+		$take_damage_cooldown.start()
 	health -= amount
 	if health <= 0.0:
 		die()
@@ -151,6 +365,9 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		_player = body
 		_chasing = true
+	_knockback_velocity = Vector2.ZERO
+	_slow_factor = 0.0
+	_slow_timer = 0.0
 
 
 func _on_detection_area_body_exited(body: Node2D) -> void:
@@ -211,6 +428,11 @@ func on_release() -> void:
 	_chasing = false
 	_player_in_attack_zone = false
 	_player = null
+	_is_telegraphing = false
+	_is_diving = false
+	_is_ethereal = false
+	$AnimatedSprite2D.position = Vector2.ZERO
+	$AnimatedSprite2D.modulate = Color.WHITE
 	$CollisionShape2D.set_deferred("disabled", true)
 	$enemy_hitbox/CollisionShape2D.set_deferred("disabled", true)
 	$detection_area/CollisionShape2D.set_deferred("disabled", true)

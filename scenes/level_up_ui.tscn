@@ -38,37 +38,42 @@ theme_override_constants/separation = 20
 
 [node name="Title" type="Label" parent="Center/Panel/Margin/VBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 30
-text = "LEVEL UP!"
+theme_override_colors/font_color = Color(1, 0.88, 0.35, 1)
+theme_override_font_sizes/font_size = 26
+text = "✦ ¡ELIGE TU PODER! ✦"
 horizontal_alignment = 1
 
 [node name="Options" type="HBoxContainer" parent="Center/Panel/Margin/VBox"]
 layout_mode = 2
-theme_override_constants/separation = 16
+theme_override_constants/separation = 18
 
 [node name="Option1" type="Button" parent="Center/Panel/Margin/VBox/Options"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(230, 140)
+custom_minimum_size = Vector2(235, 275)
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "Upgrade"
+theme_override_font_sizes/font_size = 13
+text = ""
+autowrap_mode = 3
 
 [node name="Option2" type="Button" parent="Center/Panel/Margin/VBox/Options"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(230, 140)
+custom_minimum_size = Vector2(235, 275)
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "Upgrade"
+theme_override_font_sizes/font_size = 13
+text = ""
+autowrap_mode = 3
 
 [node name="Option3" type="Button" parent="Center/Panel/Margin/VBox/Options"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(230, 140)
+custom_minimum_size = Vector2(235, 275)
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "Upgrade"
+theme_override_font_sizes/font_size = 13
+text = ""
+autowrap_mode = 3
 
 [node name="Hint" type="Label" parent="Center/Panel/Margin/VBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
-text = "Click, press 1/2/3, or use the gamepad"
+theme_override_colors/font_color = Color(0.75, 0.78, 0.86, 1)
+theme_override_font_sizes/font_size = 13
+text = "Haz clic, presiona 1 / 2 / 3 o usa el mando"
 horizontal_alignment = 1

@@ -1,10 +1,11 @@
-[gd_scene load_steps=62 format=3 uid="uid://bcajrvn5c5fcv"]
+[gd_scene load_steps=63 format=3 uid="uid://bcajrvn5c5fcv"]
 
 [ext_resource type="Script" uid="uid://cusumss6ccdhq" path="res://scripts/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://6w4lru8focd2" path="res://art/characters/player.png" id="2_qhqgy"]
 [ext_resource type="PackedScene" uid="uid://boga8f5ou7hvi" path="res://scenes/touch_controls.tscn" id="3_qhqgy"]
 [ext_resource type="Texture2D" uid="uid://ccdcjsuj330uy" path="res://art/attack_button.png" id="4_dqkch"]
 [ext_resource type="Script" path="res://scripts/player_stats.gd" id="5_stats"]
+[ext_resource type="Script" path="res://scripts/weapon_manager.gd" id="6_wm"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_g2els"]
 radius = 5.0
@@ -438,6 +439,9 @@ shape = SubResource("CircleShape2D_g2els")
 
 [node name="PlayerStats" type="Node" parent="."]
 script = ExtResource("5_stats")
+
+[node name="WeaponManager" type="Node2D" parent="."]
+script = ExtResource("6_wm")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 y_sort_enabled = true
