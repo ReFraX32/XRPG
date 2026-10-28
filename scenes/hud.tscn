@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_hud"]
 
 [node name="HUD" type="CanvasLayer"]
+process_mode = 3
 layer = 5
 script = ExtResource("1_hud")
 
@@ -15,48 +16,219 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="StatsBox" type="VBoxContainer" parent="Root"]
-layout_mode = 0
-offset_left = 12.0
-offset_top = 10.0
-offset_right = 300.0
-offset_bottom = 130.0
+[node name="ExpBarContainer" type="VBoxContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 18.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
 
-[node name="LevelLabel" type="Label" parent="Root/StatsBox"]
+[node name="ExpBar" type="ProgressBar" parent="Root/ExpBarContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
-text = "LV 1"
+mouse_filter = 2
+show_percentage = false
 
-[node name="TimeLabel" type="Label" parent="Root/StatsBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "00:00"
-
-[node name="KillsLabel" type="Label" parent="Root/StatsBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "Kills: 0"
-
-[node name="EnemiesLabel" type="Label" parent="Root/StatsBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "Enemies: 0"
-
-[node name="ExpBar" type="ProgressBar" parent="Root"]
+[node name="TopPanel" type="PanelContainer" parent="Root"]
 unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 12.0
+offset_top = 16.0
+offset_right = -12.0
+offset_bottom = 64.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="Margin" type="MarginContainer" parent="Root/TopPanel"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 6
+
+[node name="HBox" type="HBoxContainer" parent="Root/TopPanel/Margin"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 16
+
+[node name="LeftInfo" type="HBoxContainer" parent="Root/TopPanel/Margin/HBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="LevelBadge" type="PanelContainer" parent="Root/TopPanel/Margin/HBox/LeftInfo"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 32)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="LevelLabel" type="Label" parent="Root/TopPanel/Margin/HBox/LeftInfo/LevelBadge"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.35, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_font_sizes/font_size = 16
+text = "LV 1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HealthBox" type="VBoxContainer" parent="Root/TopPanel/Margin/HBox/LeftInfo"]
+layout_mode = 2
+alignment = 1
+
+[node name="HpBar" type="ProgressBar" parent="Root/TopPanel/Margin/HBox/LeftInfo/HealthBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 14)
+layout_mode = 2
+mouse_filter = 2
+value = 100.0
+show_percentage = false
+
+[node name="HpLabel" type="Label" parent="Root/TopPanel/Margin/HBox/LeftInfo/HealthBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 0.9)
+theme_override_font_sizes/font_size = 10
+text = "❤ 100 / 100"
+vertical_alignment = 1
+
+[node name="CenterTimer" type="CenterContainer" parent="Root/TopPanel/Margin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="TimerPanel" type="PanelContainer" parent="Root/TopPanel/Margin/HBox/CenterTimer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 32)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TimeLabel" type="Label" parent="Root/TopPanel/Margin/HBox/CenterTimer/TimerPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "00:00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RightInfo" type="HBoxContainer" parent="Root/TopPanel/Margin/HBox"]
+layout_mode = 2
+alignment = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="KillsBadge" type="PanelContainer" parent="Root/TopPanel/Margin/HBox/RightInfo"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(85, 32)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="KillsLabel" type="Label" parent="Root/TopPanel/Margin/HBox/RightInfo/KillsBadge"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.45, 0.4, 1)
+theme_override_font_sizes/font_size = 13
+text = "💀 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EnemiesBadge" type="PanelContainer" parent="Root/TopPanel/Margin/HBox/RightInfo"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(90, 32)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="EnemiesLabel" type="Label" parent="Root/TopPanel/Margin/HBox/RightInfo/EnemiesBadge"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.8, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "👾 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ExpValueLabel" type="Label" parent="Root"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -160.0
+offset_top = 4.0
+offset_right = -16.0
+offset_bottom = 20.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.5, 0.9, 1, 0.8)
+theme_override_font_sizes/font_size = 10
+text = "0 / 10 EXP"
+horizontal_alignment = 2
+
+[node name="PauseOverlay" type="ColorRect" parent="."]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 8.0
-offset_top = -26.0
-offset_right = -8.0
-offset_bottom = -10.0
 grow_horizontal = 2
-grow_vertical = 0
-show_percentage = false
+grow_vertical = 2
+color = Color(0.04, 0.05, 0.08, 0.8)
+
+[node name="PauseCenter" type="CenterContainer" parent="PauseOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PausePanel" type="PanelContainer" parent="PauseOverlay/PauseCenter"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 260)
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="PauseOverlay/PauseCenter/PausePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 20
+
+[node name="VBox" type="VBoxContainer" parent="PauseOverlay/PauseCenter/PausePanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="PauseTitle" type="Label" parent="PauseOverlay/PauseCenter/PausePanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.4, 1)
+theme_override_font_sizes/font_size = 22
+text = "⏸ JUEGO PAUSADO"
+horizontal_alignment = 1
+
+[node name="ResumeBtn" type="Button" parent="PauseOverlay/PauseCenter/PausePanel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "▶ Continuar"
+
+[node name="RestartBtn" type="Button" parent="PauseOverlay/PauseCenter/PausePanel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "↺ Reiniciar Partida"
+
+[node name="MenuBtn" type="Button" parent="PauseOverlay/PauseCenter/PausePanel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "⌂ Salir al Menú"

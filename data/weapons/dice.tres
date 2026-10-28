@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="WeaponDefinition" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapon_definition.gd" id="1_def"]
+[ext_resource type="Texture2D" path="res://art/weapons/dice_icon.png" id="2_icon"]
+
+[resource]
+script = ExtResource("1_def")
+id = &"dice"
+display_name = "Dados del Destino"
+category = "Azar / Crítico"
+icon = ExtResource("2_icon")
+base_description = "Lanza dados con daño según su cara."
+base_damage = 12.0
+base_range = 85.0
+base_cooldown = 1.8
+common_perk = "Tirada del 1 al 6 de daño."
+epic_perk = "Tira 3-6. El 6 da +35% velocidad."
+legendary_perk = "Tira 5-6. El 6 da +1% crítico fijo."
+mythic_perk = "3 dados: sumar 18 limpia pantalla."

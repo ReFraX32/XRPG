@@ -1,0 +1,322 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_menu"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.04, 0.05, 0.08, 1)
+
+[node name="HeaderContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 45.0
+offset_bottom = 145.0
+grow_horizontal = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="HeaderContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.35, 1)
+theme_override_colors/font_shadow_color = Color(0.8, 0.5, 0.1, 0.4)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/shadow_outline_size = 12
+theme_override_font_sizes/font_size = 46
+text = "✦ XRPG SURVIVORS ✦"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="HeaderContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.72, 0.88, 0.9)
+theme_override_font_sizes/font_size = 16
+text = "DESAFÍA LA HORDA DE LA OSCURIDAD"
+horizontal_alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuButtons" type="VBoxContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="PlayBtn" type="Button" parent="CenterContainer/MenuButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "⚔ JUGAR"
+
+[node name="WeaponsBtn" type="Button" parent="CenterContainer/MenuButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "✦ ARSENAL DE ARMAS"
+
+[node name="BestiaryBtn" type="Button" parent="CenterContainer/MenuButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "👾 BESTIARIO DE MONSTRUOS"
+
+[node name="ControlsBtn" type="Button" parent="CenterContainer/MenuButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "⚙ CONTROLES"
+
+[node name="QuitBtn" type="Button" parent="CenterContainer/MenuButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "✕ SALIR"
+
+[node name="FooterLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -28.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.45, 0.48, 0.58, 0.8)
+theme_override_font_sizes/font_size = 12
+text = "XRPG Survivors v1.2.0 • Hecho con Godot 4"
+horizontal_alignment = 1
+
+[node name="WeaponsModal" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dim" type="ColorRect" parent="WeaponsModal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.03, 0.06, 0.88)
+
+[node name="Center" type="CenterContainer" parent="WeaponsModal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="WeaponsModal/Center"]
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="WeaponsModal/Center/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 20
+
+[node name="VBox" type="VBoxContainer" parent="WeaponsModal/Center/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="ModalTitle" type="Label" parent="WeaponsModal/Center/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.4, 1)
+theme_override_font_sizes/font_size = 24
+text = "✦ ARSENAL DE ARMAS & RAREZAS ✦"
+horizontal_alignment = 1
+
+[node name="ModalSub" type="Label" parent="WeaponsModal/Center/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.75, 0.85, 0.9)
+theme_override_font_sizes/font_size = 13
+text = "Escalado por Rareza: Común (x1.0) | Épica (x1.5) | Legendaria (x2.2) | Mítica (x3.5)"
+horizontal_alignment = 1
+
+[node name="WeaponCardsContainer" type="HBoxContainer" parent="WeaponsModal/Center/Panel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="CloseWeaponsBtn" type="Button" parent="WeaponsModal/Center/Panel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 36)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 14
+text = "Cerrar"
+
+[node name="BestiaryModal" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dim" type="ColorRect" parent="BestiaryModal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.03, 0.06, 0.88)
+
+[node name="Center" type="CenterContainer" parent="BestiaryModal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="BestiaryModal/Center"]
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="BestiaryModal/Center/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 20
+
+[node name="VBox" type="VBoxContainer" parent="BestiaryModal/Center/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="ModalTitle" type="Label" parent="BestiaryModal/Center/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.45, 0.8, 1)
+theme_override_font_sizes/font_size = 24
+text = "👾 BESTIARIO DE MONSTRUOS 👾"
+horizontal_alignment = 1
+
+[node name="ModalSub" type="Label" parent="BestiaryModal/Center/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.75, 0.85, 0.9)
+theme_override_font_sizes/font_size = 13
+text = "Conoce las criaturas de la noche y sus habilidades especiales"
+horizontal_alignment = 1
+
+[node name="BestiaryCardsContainer" type="HBoxContainer" parent="BestiaryModal/Center/Panel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="CloseBestiaryBtn" type="Button" parent="BestiaryModal/Center/Panel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 36)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 14
+text = "Cerrar"
+
+[node name="ControlsModal" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dim" type="ColorRect" parent="ControlsModal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.03, 0.06, 0.88)
+
+[node name="Center" type="CenterContainer" parent="ControlsModal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="ControlsModal/Center"]
+custom_minimum_size = Vector2(480, 0)
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="ControlsModal/Center/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="ControlsModal/Center/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="ModalTitle" type="Label" parent="ControlsModal/Center/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 24
+text = "⚙ CONTROLES & GUÍA ⚙"
+horizontal_alignment = 1
+
+[node name="ControlsText" type="Label" parent="ControlsModal/Center/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.88, 0.95, 0.95)
+theme_override_font_sizes/font_size = 14
+text = "• Moverse: Teclas W, A, S, D o Flechas direccionales.
+• Ataque Melee: Automático continuo al tener enemigos a rango (o presionar Espacio / E).
+• Selección de Armas: Teclas 1, 2, 3 o Click en la tarjeta deseada.
+• Pausar el Juego: Tecla Escape (ESC).
+• Objetivo: Sobrevive a oleadas interminables, recolecta orbes de experiencia y crea combinaciones míticas para resistir la horda."
+
+[node name="CloseControlsBtn" type="Button" parent="ControlsModal/Center/Panel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 36)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 14
+text = "Cerrar"

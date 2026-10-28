@@ -10,8 +10,8 @@ extends Area2D
 enum State { IDLE, MAGNET }
 
 const MAGNET_ACCELERATION := 1500.0
-const MAGNET_MAX_SPEED := 500.0
-const COLLECT_DISTANCE := 12.0
+const MAGNET_MAX_SPEED := 520.0
+const COLLECT_DISTANCE := 16.0
 const BOB_AMPLITUDE := 1.5
 const BOB_SPEED := 3.0
 
@@ -57,8 +57,26 @@ func _physics_process(delta: float) -> void:
 			if distance <= COLLECT_DISTANCE:
 				_collect()
 				return
-			_velocity = (_velocity + to_player.normalized() * MAGNET_ACCELERATION * delta).limit_length(MAGNET_MAX_SPEED)
-			global_position += _velocity * delta
+
+			var current_speed := _velocity.length()
+			current_speed = minf(maxf(current_speed, 120.0) + MAGNET_ACCELERATION * delta, MAGNET_MAX_SPEED)
+
+			# Steer directly toward player, aggressively damping tangential velocity to prevent orbiting
+			var target_velocity := to_player.normalized() * current_speed
+			_velocity = _velocity.move_toward(target_velocity, MAGNET_ACCELERATION * 3.5 * delta)
+
+			var step := _velocity * delta
+			# If this frame's step reaches or overshoots the player, collect immediately
+			if step.length() >= distance:
+				_collect()
+				return
+
+			global_position += step
+
+			if global_position.distance_to(_player.global_position) <= COLLECT_DISTANCE:
+				_collect()
+				return
+
 			_pulse_phase += delta * 12.0
 			$Polygon2D.scale = Vector2.ONE * (1.0 + 0.15 * sin(_pulse_phase))
 

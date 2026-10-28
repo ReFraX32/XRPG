@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3]
+[gd_scene load_steps=22 format=3]
 
 [ext_resource type="Script" path="res://scripts/run_director.gd" id="1_director"]
 [ext_resource type="Script" path="res://scripts/map_generator.gd" id="2_mapgen"]
@@ -19,6 +19,8 @@
 [ext_resource type="Resource" path="res://data/enemies/slime_green.tres" id="15_green"]
 [ext_resource type="Resource" path="res://data/enemies/slime_red.tres" id="16_red"]
 [ext_resource type="Resource" path="res://data/enemies/slime_royal.tres" id="17_royal"]
+[ext_resource type="Resource" path="res://data/enemies/ghost.tres" id="20_ghost"]
+[ext_resource type="Resource" path="res://data/enemies/bat.tres" id="21_bat"]
 
 [node name="survival" type="Node2D"]
 y_sort_enabled = true
@@ -59,7 +61,7 @@ unique_name_in_owner = true
 script = ExtResource("3_spawner")
 difficulty = ExtResource("12_difficulty")
 enemy_scene = ExtResource("7_enemy")
-definitions = Array[ExtResource("18_defscript")]([ExtResource("14_blue"), ExtResource("15_green"), ExtResource("16_red"), ExtResource("17_royal")])
+definitions = Array[ExtResource("18_defscript")]([ExtResource("14_blue"), ExtResource("15_green"), ExtResource("16_red"), ExtResource("17_royal"), ExtResource("20_ghost"), ExtResource("21_bat")])
 
 [node name="ExpGemSystem" type="Node" parent="."]
 unique_name_in_owner = true

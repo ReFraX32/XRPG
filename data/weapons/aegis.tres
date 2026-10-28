@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="WeaponDefinition" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapon_definition.gd" id="1_def"]
+[ext_resource type="Texture2D" path="res://art/weapons/aegis_icon.png" id="2_icon"]
+
+[resource]
+script = ExtResource("1_def")
+id = &"aegis"
+display_name = "Aegis Protector"
+category = "Defensa / Espinas"
+icon = ExtResource("2_icon")
+base_description = "Escudos orbitales que bloquean golpes."
+base_damage = 15.0
+base_range = 35.0
+base_cooldown = 6.0
+common_perk = "2 escudos y daño de espinas."
+epic_perk = "3 escudos + empuje al bloquear."
+legendary_perk = "Cura vida al romperse o recargar."
+mythic_perk = "Infinitos al moverte + Nova 360°."
